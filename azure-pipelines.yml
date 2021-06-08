@@ -1,0 +1,28 @@
+trigger:
+- master
+
+# Repo: devops_pipelines/templates
+# File: azure-pipelines.yml
+resources:
+  repositories:
+    - repository: almtemplates
+      type: git
+      name: ALM/devops_pipelines
+      ref: refs/tags/js-npm-bld2.x.x                              #tag reference for a specific version of the template we want to use.
+
+stages:
+- stage: NodeBuild
+  jobs:
+  - template: javascript-npm-build/javascript-npm-build.yml@almtemplates
+  
+    parameters:
+      # Required
+      Portfolio: 'esm'
+      
+      # Optional Parameters and default value
+      #BuildFolder: 'build'
+      #RunSonarScan: 'true' # Set to 'false' if the branch name is not master
+      #${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+      #  RunSonarScan: 'true'
+      #${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
+      #  RunSonarScan: 'false'
